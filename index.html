@@ -32,7 +32,12 @@
                 <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('recherche.html'); return false;">Recherche</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('enseignement.html'); return false;">Enseignement</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('cv.html'); return false;"> Court CV</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('contact.html'); return false;"> Contact</a></li>
+	        <li class="nav-item">
+    <a class="nav-link" href="#" onclick="loadPage('contact.html'); return false;">
+        Contact
+    </a>
+</li>
+
 	    </ul>
         </div>
     </div>
@@ -49,19 +54,36 @@ function loadPage(page) {
     fetch(page)
         .then(response => response.text())
         .then(html => {
-            document.getElementById('content').innerHTML = html;
+            const content = document.getElementById('content');
+            content.innerHTML = html;
+
+            // Activation de l'email obfusqué (si présent)
+            const emailSpan = document.getElementById("email");
+            if (emailSpan) {
+                const user = emailSpan.dataset.user;
+                const domain = emailSpan.dataset.domain;
+
+                const a = document.createElement("a");
+                a.href = "mailto:" + user + "@" + domain;
+                a.textContent = user + "@" + domain;
+
+                emailSpan.appendChild(a);
+            }
         })
         .catch(err => {
-            document.getElementById('content').innerHTML = "<p>Erreur lors du chargement de la page.</p>";
+            document.getElementById('content').innerHTML =
+                "<p>Erreur lors du chargement de la page.</p>";
             console.error(err);
         });
 }
+</script>
 
-// Charger la page d'accueil par défaut au démarrage
-document.addEventListener("DOMContentLoaded", function() {
-    loadPage('accueil.html');
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    loadPage("accueil.html");
 });
 </script>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
